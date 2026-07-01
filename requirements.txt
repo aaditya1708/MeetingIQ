@@ -1,0 +1,10 @@
+streamlit
+moviepy
+faster-whisper
+sentence-transformers
+chromadb
+google-genai
+python-dotenv
+torch
+torchaudio
+numpy
