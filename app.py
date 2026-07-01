@@ -1,10 +1,3 @@
-"""
-MeetingIQ — Streamlit Frontend
-------------------------------------------
-Upload a meeting recording, let the RAG pipeline transcribe & index it,
-then ask questions or request a full summary.
-"""
-
 import os
 import time
 import chromadb
@@ -19,9 +12,6 @@ from lib.ingestion_pipeline import (
 )
 from lib.backend import backend_pipeline
 
-# --------------------------------------------------------------------------
-# Page config
-# --------------------------------------------------------------------------
 st.set_page_config(
     page_title="MeetingIQ",
     page_icon="🎙️",
@@ -37,9 +27,6 @@ COLLECTION_NAME = "my_collection"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(AUDIO_DIR, exist_ok=True)
 
-# --------------------------------------------------------------------------
-# Styling
-# --------------------------------------------------------------------------
 st.markdown(
     """
     <style>
@@ -87,9 +74,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --------------------------------------------------------------------------
-# Session state
-# --------------------------------------------------------------------------
 defaults = {
     "collection": None,
     "chunks": None,
@@ -116,7 +100,7 @@ def clear_existing_collection():
     try:
         client.delete_collection(name=COLLECTION_NAME)
     except Exception:
-        pass  # collection didn't exist yet — nothing to clear
+        pass  
 
 
 def process_video(uploaded_file):
@@ -153,10 +137,6 @@ def process_video(uploaded_file):
     st.session_state.processed = True
     st.session_state.messages = []
 
-
-# --------------------------------------------------------------------------
-# Header
-# --------------------------------------------------------------------------
 st.markdown(
     """
     <div class="app-header">
@@ -166,10 +146,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-# --------------------------------------------------------------------------
-# Sidebar — upload & controls
-# --------------------------------------------------------------------------
 with st.sidebar:
     st.subheader("📁 Meeting Upload")
 
@@ -224,9 +200,6 @@ with st.sidebar:
             "- What was discussed about the client?"
         )
 
-# --------------------------------------------------------------------------
-# Main area — chat
-# --------------------------------------------------------------------------
 if not st.session_state.processed:
     st.info(
         "👋 Upload a meeting recording from the sidebar and click **Process Meeting** to get started.",
