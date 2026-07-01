@@ -3,7 +3,7 @@ moviepy
 faster-whisper
 sentence-transformers
 chromadb
-google-genai
+google-generativeai
 python-dotenv
 torch
 torchaudio

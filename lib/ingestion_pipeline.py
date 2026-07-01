@@ -1,7 +1,8 @@
-from moviepy import VideoFileClip
+from moviepy.editor import VideoFileClip
 from faster_whisper import WhisperModel
 from sentence_transformers import SentenceTransformer
 import chromadb
+import uuid
 
 def extract_audio(video_path,output_audio_path):
     video = VideoFileClip(video_path)
@@ -36,17 +37,27 @@ def embed_chunks(chunks):
     embeddings = embeder.encode(chunks_text)
     return embeddings
 
-def store_embeddings(embeddings,chunks):
+def store_embeddings(embeddings, chunks):
     client = chromadb.PersistentClient(path="./chroma_db")
-    collection = client.get_or_create_collection(name="my_collection")
+    try:
+        client.delete_collection("my_collection")
+    except:
+        pass
+
+    collection = client.get_or_create_collection(
+        name="my_collection"
+    )
     collection.add(
         embeddings=embeddings.tolist(),
-        ids=[str(i) for i in range(len(chunks))],
+        ids=[str(uuid.uuid4()) for _ in range(len(chunks))],
         documents=[chunk["text"] for chunk in chunks],
-        metadatas=[{
-            "start" : chunk["start"],
-            "end" : chunk["end"]
-        } for chunk in chunks]
+        metadatas=[
+            {
+                "start": chunk["start"],
+                "end": chunk["end"]
+            }
+            for chunk in chunks
+        ]
     )
     return collection
 
