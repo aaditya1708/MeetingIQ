@@ -150,8 +150,7 @@ with st.sidebar:
     st.subheader("📁 Meeting Upload")
 
     if not os.getenv("GEMINI_API_KEY"):
-        st.warning("`GEMINI_API_KEY` not found. Add it to your `.env` file.", icon="⚠️")
-
+        st.warning("`GEMINI_API_KEY` not found. Add it in the Render Environment Variables.", icon="⚠️")
     uploaded_file = st.file_uploader(
         "Upload a video file",
         type=["mp4", "mov", "mkv", "avi", "webm"],
